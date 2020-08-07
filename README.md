@@ -30,7 +30,7 @@ Mettre à jour le système
 <pre><code>sudo su
 apt-get update
 reboot # pour ubuntu 20.04
-sudo su # pour ubuntu 20.04
+sudo su # pour ubuntu 20.04  
 apt-get upgrade
 apt-get install zip
 cd /
@@ -113,6 +113,8 @@ curl -sfL https://get.k3s.io | K3S_URL=https://192.168.1.71:6443 K3S_TOKEN=token
 <pre><code>sudo su
 apt-get install docker.io
 apt-get install docker-compose
+docker volume create portainer_data
+docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer
 </code></pre>
 #### Installation du master node swarm
 <pre><code>sudo su
@@ -132,9 +134,9 @@ Créez une table d'export NFS
 <pre><code>nano /etc/exports
 </code></pre>
 Copier coller les chemins ci-dessous
-<pre><code>/cocooning-master 192.168.1.100(rw,no_root_squash,async,no_subtree_check)
-/cocooning-master/ddclient 192.168.1.100(rw,no_root_squash,async,no_subtree_check)
-/cocooning-master/homeassistant 192.168.1.100(rw,no_root_squash,async,no_subtree_check)
+<pre><code>/Cocooning-master 192.168.1.100(rw,no_root_squash,async,no_subtree_check)
+/Cocooning-master/ddclient 192.168.1.100(rw,no_root_squash,async,no_subtree_check)
+/Cocooning-master/homeassistant 192.168.1.100(rw,no_root_squash,async,no_subtree_check)
 </code></pre>
 
 > Créer autant de ligne que de répertoire à partager 
