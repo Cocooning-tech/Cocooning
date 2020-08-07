@@ -36,9 +36,9 @@ apt-get install zip
 cd /
 wget https://codeload.github.com/Cocooning-tech/Cocooning/zip/master
 unzip master
-chown -R nobody:nogroup /cocooning-master
-chmod -R 777 /cocooning-master
-cd /cocooning-master
+chown -R nobody:nogroup /Cocooning-master
+chmod -R 777 /Cocooning-master
+cd /Cocooning-master
 </code></pre>
 
 > https://codeload.github.com/Cocooning-tech/Cocooning/zip/master à changer en fonction du repositorie
