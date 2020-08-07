@@ -34,14 +34,14 @@ sudo su # pour ubuntu 20.04
 apt-get upgrade
 apt-get install zip
 cd /
-wget https://codeload.github.com/Cocooning-tech/apps/zip/master
+wget https://codeload.github.com/Cocooning-tech/Cocooning/zip/master
 unzip master
 chown -R nobody:nogroup /apps-master
 chmod -R 777 /apps-master
-cd /apps-master
+cd /cocooning-master
 </code></pre>
 
-> https://github.com/Cocooning-tech/system.git à changer en fonction du repositorie
+> https://codeload.github.com/Cocooning-tech/Cocooning/zip/master à changer en fonction du repositorie
 > Sous la version 20.04 il peut être nécessaire de rebooter entre update et upgrade
 
 #### Activer le Wifi
@@ -132,13 +132,13 @@ Créez une table d'export NFS
 <pre><code>nano /etc/exports
 </code></pre>
 Copier coller les chemins ci-dessous
-<pre><code>/apps-master 192.168.1.100(rw,no_root_squash,async,no_subtree_check)
-/apps-master/ddclient 192.168.1.100(rw,no_root_squash,async,no_subtree_check)
-/apps-master/homeassistant 192.168.1.100(rw,no_root_squash,async,no_subtree_check)
+<pre><code>/cocooning-master 192.168.1.100(rw,no_root_squash,async,no_subtree_check)
+/cocooning-master/ddclient 192.168.1.100(rw,no_root_squash,async,no_subtree_check)
+/cocooning-master/homeassistant 192.168.1.100(rw,no_root_squash,async,no_subtree_check)
 </code></pre>
 
 > Créer autant de ligne que de répertoire à partager 
-> L'option async (dangereusse ?) permet de meilleures performances et le lancement de plusieurs replicas
+> L'option async (dangereuse ?) permet de meilleures performances et le lancement de plusieurs replicas
 
 Mettre à jour la table nfs
 <pre><code>exportfs -ra
