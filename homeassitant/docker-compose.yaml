@@ -1,0 +1,39 @@
+version: '3.2'
+
+services:
+  homeassistant:
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.http.routers.hassio.rule=Host(`00001.cocooning.tech`)"
+#      - "traefik.http.routers.hassio.entrypoints=websecure"
+#      - "traefik.port=8123"
+    image: homeassistant/raspberrypi3-homeassistant:stable
+    volumes:
+      - type: volume
+        source: cocooning-nfs
+        target: /config
+        volume:
+          nocopy: true
+    environment:
+      - TZ=Europe/Paris
+    deploy:
+      replicas: 2
+      placement:
+        constraints:
+          - node.role == manager
+#    network_mode: host
+    networks:
+        - cocooning-network
+    ports:
+      - "8123:8123"
+# créer le network web avec le driver overlay (pas d'option)
+networks:
+  cocooning-network:
+    external: true
+volumes:
+  cocooning-nfs:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: "nfsvers=4,addr=192.168.1.100,nolock,soft,rw"
+      device: ":/apps/homeassistant"

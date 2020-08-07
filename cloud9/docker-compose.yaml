@@ -1,0 +1,29 @@
+version: "3.2"
+
+services:
+  cloud9:
+    image: linuxserver/cloud9
+    environment:
+#      - PUID=1000
+#      - PGID=1000
+      - TZ=Europe/Paris
+    volumes:
+      - type: volume
+        source: cocooning-nfs
+        target: /code
+        volume:
+          nocopy: true
+    ports:
+      - 8080:8000
+    deploy:
+      replicas: 2
+      placement:
+        constraints:
+          - node.role == manager
+volumes:
+  cocooning-nfs:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: "nfsvers=4,addr=192.168.1.100,nolock,soft,rw"
+      device: ":/apps"

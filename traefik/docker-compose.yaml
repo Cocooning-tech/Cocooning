@@ -1,0 +1,30 @@
+version: "3.3"
+
+services:
+
+  traefik:
+    image: "traefik:v2.2"
+    networks:
+      - web
+    ports:
+      - "80:80"
+      - "443:443"
+#      - "8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /apps/traefik/traefik.toml:/etc/traefik/traefik.toml
+      - /apps/traefik/acme.json:/acme.json
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`00001.cocooning.tech`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.routers.traefik.entrypoints=websecure"
+
+#      - "traefik.http.middlewares.myAdmin.ipWhiteList.sourceRange=172.17.0.1"
+#      - "traefik.http.routers.traefik.middlewares=myAdmin@docker"
+#      - "traefik.http.routers.traefik.middlewares=auth"
+#      - "traefik.http.middlewares.auth.basicauth.users=tchube:$$apr1$$DZUjqtsH$$VRKssSgVWzU3YlrCA2H6G1"
+
+networks:
+  web:
+    external: true
