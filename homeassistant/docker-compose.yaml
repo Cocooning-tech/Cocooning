@@ -17,7 +17,7 @@ services:
     environment:
       - TZ=Europe/Paris
     deploy:
-      replicas: 2
+      replicas: 1
       placement:
         constraints:
           - node.role == manager
@@ -35,5 +35,5 @@ volumes:
     driver: local
     driver_opts:
       type: "nfs"
-      o: "nfsvers=4,addr=192.168.1.100,nolock,soft,rw"
+      o: "nfsvers=4,addr=192.168.1.100,nolock,soft,rw,async"
       device: ":/Cocooning-master/homeassistant"

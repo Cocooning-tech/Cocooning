@@ -34,11 +34,11 @@ sudo su # pour ubuntu 20.04
 apt-get upgrade
 apt-get install zip
 cd /
-wget https://codeload.github.com/Cocooning-tech/Cocooning/zip/master
+wget https://codeload.github.com/Cocooning-tech/cocooning/zip/master
 unzip master
-chown -R nobody:nogroup /Cocooning-master
-chmod -R 777 /Cocooning-master
-cd /Cocooning-master
+chown -R nobody:nogroup /cocooning-master
+chmod -R 777 /cocooning-master
+cd /cocooning-master
 </code></pre>
 
 > https://codeload.github.com/Cocooning-tech/Cocooning/zip/master à changer en fonction du repositorie
@@ -134,9 +134,9 @@ Créez une table d'export NFS
 <pre><code>nano /etc/exports
 </code></pre>
 Copier coller les chemins ci-dessous
-<pre><code>/Cocooning-master 192.168.1.100(rw,no_root_squash,async,no_subtree_check)
-/Cocooning-master/ddclient 192.168.1.100(rw,no_root_squash,async,no_subtree_check)
-/Cocooning-master/homeassistant 192.168.1.100(rw,no_root_squash,async,no_subtree_check)
+<pre><code>/cocooning-master 192.168.1.100(rw,no_root_squash,async,no_subtree_check)
+/cocooning-master/ddclient 192.168.1.100(rw,no_root_squash,async,no_subtree_check)
+/cocooning-master/homeassistant 192.168.1.100(rw,no_root_squash,async,no_subtree_check)
 </code></pre>
 
 > Créer autant de ligne que de répertoire à partager 
