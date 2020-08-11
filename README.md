@@ -33,6 +33,7 @@ reboot # pour ubuntu 20.04
 sudo su # pour ubuntu 20.04  
 apt-get upgrade
 apt-get install zip
+timedatectl set-timezone Europe/Paris
 cd /
 wget https://codeload.github.com/Cocooning-tech/cocooning/zip/master
 unzip master
@@ -92,10 +93,6 @@ Changer le hostname en fonction du type de noeud
 <pre><code>reboot
 </code></pre>
 
-#### Mettre à jour la date
-A faire
-### Installation de dietpi
-
 ## Installation de k3s
 ### Mode single node master sans etcd
 #### Installation du master node
@@ -134,9 +131,9 @@ Créez une table d'export NFS
 <pre><code>nano /etc/exports
 </code></pre>
 Copier coller les chemins ci-dessous
-<pre><code>/cocooning-master 192.168.1.100(rw,no_root_squash,async,no_subtree_check)
-/cocooning-master/ddclient 192.168.1.100(rw,no_root_squash,async,no_subtree_check)
-/cocooning-master/homeassistant 192.168.1.100(rw,no_root_squash,async,no_subtree_check)
+<pre><code>/cocooning-master 192.168.1.100(rw,no_root_squash,sync,no_subtree_check)
+/cocooning-master/ddclient 192.168.1.100(rw,no_root_squash,sync,no_subtree_check)
+/cocooning-master/homeassistant 192.168.1.100(rw,no_root_squash,sync,no_subtree_check)
 </code></pre>
 
 > Créer autant de ligne que de répertoire à partager 
