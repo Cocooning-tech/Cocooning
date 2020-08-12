@@ -42,7 +42,7 @@ chmod -R 777 /cocooning-master
 cd /cocooning-master
 </code></pre>
 
-> https://codeload.github.com/Cocooning-tech/Cocooning/zip/master à changer en fonction du repositorie
+> https://codeload.github.com/Cocooning-tech/cocooning/zip/master à changer en fonction du repositorie
 > Sous la version 20.04 il peut être nécessaire de rebooter entre update et upgrade
 
 #### Activer le Wifi
@@ -119,7 +119,7 @@ docker swarm init --advertise-addr 192.168.1.100
 </code></pre>
 #### Installation d'un worker node swarm
 <pre><code>sudo su
-docker swarm join --token SWMTKN-1-4xv6rbe2tfi91irtk6iy3uflpny4zjhh4gjvr5ij0lxhg8or4f-3c6wvopb9kgwiul62p1xabj07 192.168.1.101:2377
+docker swarm join --token SWMTKN-1-4yx3gv5rzah7a9gaai288dqr14sulx8xhuwcuzv36lldp8ff47-8u744eei5ii7p9ms9e242no83 192.168.1.100:2377
 </code></pre>
 
 ## Montage d'un volume NFS sur le master node

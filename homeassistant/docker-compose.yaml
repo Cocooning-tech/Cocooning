@@ -8,20 +8,16 @@ services:
 #      - "traefik.http.routers.hassio.entrypoints=websecure"
 #      - "traefik.port=8123"
     image: homeassistant/raspberrypi3-homeassistant:stable
-#    volumes:
-#      - type: volume
-#        source: cocooning-nfs
-#        target: /config
-#        volume:
-#          nocopy: false
     volumes:
-      - type: bind
-        source: /cocooning-master/homeassistant
+      - type: volume
+        source: cocooning-nfs
         target: /config
+        volume:
+          nocopy: false
     environment:
       - TZ=Europe/Paris
     deploy:
-      replicas: 3
+      replicas: 1
       placement:
         constraints:
           - node.role == manager
@@ -34,10 +30,10 @@ services:
 networks:
   cocooning-network:
     external: true
-#volumes:
-#  cocooning-nfs:
-#    driver: local
-#    driver_opts:
-#      type: "nfs"
-#      o: "nfsvers=4,addr=192.168.1.100,rw"
-#      device: ":/cocooning-master/homeassistant"
+volumes:
+  cocooning-nfs:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: "nfsvers=4,addr=192.168.1.100,rw"
+      device: ":/cocooning-master/homeassistant"
