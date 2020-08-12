@@ -13,11 +13,11 @@ services:
 #        target: /code
 #        volume:
 #          nocopy: false
-      volumes:
-       - type: bind
-         source: /cocooning-master
-         target: /code
-ports:
+    volumes:
+      - type: bind
+        source: /cocooning-master
+        target: /code
+    ports:
       - 8080:8000
     deploy:
       replicas: 2
