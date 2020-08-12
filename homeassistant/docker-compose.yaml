@@ -13,11 +13,11 @@ services:
         source: cocooning-nfs
         target: /config
         volume:
-          nocopy: true
+          nocopy: false
     environment:
       - TZ=Europe/Paris
     deploy:
-      replicas: 1
+      replicas: 3
       placement:
         constraints:
           - node.role == manager
@@ -26,7 +26,7 @@ services:
         - cocooning-network
     ports:
       - "8123:8123"
-# créer le network web avec le driver overlay (pas d'option)
+# créer le network cocooning-network avec le driver overlay (pas d'option)
 networks:
   cocooning-network:
     external: true
@@ -35,5 +35,5 @@ volumes:
     driver: local
     driver_opts:
       type: "nfs"
-      o: "nfsvers=4,addr=192.168.1.100,nolock,soft,rw,async"
-      device: ":/Cocooning-master/homeassistant"
+      o: "nfsvers=4,addr=192.168.1.100,rw"
+      device: ":/cocooning-master/homeassistant"

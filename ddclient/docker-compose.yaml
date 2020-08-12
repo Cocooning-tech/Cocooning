@@ -5,15 +5,15 @@ services:
   ddclient:
     image: linuxserver/ddclient:arm64v8-latest
     environment:
-#      - PUID=1000
-#      - PGID=1000
+      - PUID=1000
+      - PGID=1000
       - TZ=Europe/Paris
     volumes:
       - type: volume
         source: cocooning-nfs
         target: /config
         volume:
-          nocopy: true
+          nocopy: false
     deploy:
       placement:
         constraints:
@@ -23,5 +23,5 @@ volumes:
     driver: local
     driver_opts:
       type: "nfs"
-      o: "nfsvers=4,addr=192.168.1.100,nolock,soft,rw"
+      o: "nfsvers=4,addr=192.168.1.100,rw"
       device: ":/Cocooning-master/ddclient"

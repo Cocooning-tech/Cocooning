@@ -4,15 +4,15 @@ services:
   cloud9:
     image: linuxserver/cloud9
     environment:
-#      - PUID=1000
-#      - PGID=1000
+      - PUID=1000
+      - PGID=1000
       - TZ=Europe/Paris
     volumes:
       - type: volume
         source: cocooning-nfs
         target: /code
         volume:
-          nocopy: true
+          nocopy: false
     ports:
       - 8080:8000
     deploy:
@@ -25,5 +25,5 @@ volumes:
     driver: local
     driver_opts:
       type: "nfs"
-      o: "nfsvers=4,addr=192.168.1.100,nolock,soft,rw"
+      o: "nfsvers=4,addr=192.168.1.100,rw"
       device: ":/cocooning-master"
