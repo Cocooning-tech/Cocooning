@@ -120,6 +120,7 @@ Relancer le service
 <pre><code>sudo su
 apt-get install docker.io
 apt-get install docker-compose
+sudo systemctl enable docker
 docker volume create portainer_data
 docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer
 cd /
@@ -151,6 +152,7 @@ curl -sfL https://get.k3s.io | K3S_URL=https://192.168.1.71:6443 K3S_TOKEN=token
 
 ## Cocooning docker
 Créer le network de type overlay : cocooning-network
+sOd54Sdr8g
 ### Deployer une stack
 <pre><code>sudo su
 cd /cocooning-master/hassio
