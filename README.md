@@ -127,7 +127,7 @@ wget https://codeload.github.com/Cocooning-tech/cocooning/zip/master
 unzip master
 # chown -R nobody:nogroup /cocooning-master
 # chmod -R 777 /cocooning-master
-cd /cocooning-master
+rm master
 </code></pre>
 #### Installation du master node swarm
 <pre><code>sudo su
