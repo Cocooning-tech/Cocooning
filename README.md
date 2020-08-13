@@ -96,7 +96,7 @@ Créez une table d'export NFS
 Copier coller les chemins ci-dessous
 <pre><code>/cocooning-master 192.168.1.100(rw,no_root_squash,sync,no_subtree_check)
 /cocooning-master/ddclient 192.168.1.100(rw,no_root_squash,sync,no_subtree_check)
-/cocooning-master/homeassistant 192.168.1.100(rw,no_root_squash,sync,no_subtree_check)
+/cocooning-master/hassio 192.168.1.100(rw,no_root_squash,sync,no_subtree_check)
 </code></pre>  
 
 > Créer autant de ligne que de répertoire à partager  
@@ -135,7 +135,7 @@ docker swarm init --advertise-addr 192.168.1.100
 </code></pre>
 #### Installation d'un worker node swarm
 <pre><code>sudo su
-docker swarm join --token SWMTKN-1-1j3c62om6dsr2urf0kanpvoachvppak86we4imnuh6fbulpmla-evhgif4aqwzn45q2nb11pw9by 192.168.1.100:2377
+docker swarm join --token SWMTKN-1-4x022l3208wgsjjgsg9zj0fl411ad9qoym4jizejlczpghp5qe-5ua8vji9d86dmcp3j3ncmtq7e 192.168.1.100:2377
 </code></pre>
 
 ### Installation de k3s en mode single node master sans etcd
@@ -150,9 +150,10 @@ curl -sfL https://get.k3s.io | K3S_URL=https://192.168.1.71:6443 K3S_TOKEN=token
 ### Mode High Availability with Embedded DB (Experimental) avec etcd
 
 ## Cocooning docker
+Créer le network de type overlay : cocooning-network
 ### Deployer une stack
 <pre><code>sudo su
-cd /cocooning-master/
+cd /cocooning-master/hassio
 docker stack deploy --compose-file docker-compose.yml hassio
 </code></pre>
 
