@@ -1,26 +1,22 @@
-# Installation d'un Raspberry Pi 3 et 4
-## Installation de l'OS
-### Installation d'ubuntu server
+# Installation d'ubuntu server
+### Installation de l'OS de base
 #### Gravure et insertion de la SD
 Graver une version de l'image disque sur SD card (Balena)
 * version __ubuntu-20.04-server__
 * version __ubuntu-18.04-server__
-
 Ejecter et rebrancher le lecteur/graveur USB  
 Modifier le fichier
 * __cmdline.txt__ sur __ubuntu-20.04-server__
 * __nobtcmd.txt__ sur __ubuntu-18.04-server__
-
 Ajouter en fin de ligne
 <pre><code>cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
 </code></pre>
-
->Voir si d'autres config sont possibles à ce niveau (WIFI...)
-
+>Voir si d'autres config sont possibles à ce niveau (WIFI...)  
 Ejecter la clé  
 Insérer la clef dans le nano  
 Se connecter en filaire (RJ45)  
 Brancher l'alimentation
+
 #### Première connection en SSH
 Utiliser Putty (déteminer IP sur port 22)  
 login : __ubuntu__  
@@ -37,13 +33,12 @@ timedatectl set-timezone Europe/Paris
 cd /
 wget https://codeload.github.com/Cocooning-tech/cocooning/zip/master
 unzip master
-chown -R nobody:nogroup /cocooning-master
-chmod -R 777 /cocooning-master
+# chown -R nobody:nogroup /cocooning-master
+# chmod -R 777 /cocooning-master
 cd /cocooning-master
 </code></pre>
-
 > https://codeload.github.com/Cocooning-tech/cocooning/zip/master à changer en fonction du repositorie
-> Sous la version 20.04 il peut être nécessaire de rebooter entre update et upgrade
+> Sous la version 20.04 il peut être nécessaire de rebooter entre update et upgrade  
 
 #### Activer le Wifi
 Configurer Netplan  
@@ -51,9 +46,7 @@ Configurer Netplan
 sudo nano /etc/netplan/10-my-config.yaml
 </code></pre>
 Ajouter le code  
-
 >Pas de tabulation dans ce fichier mais des "espaces"
-
 <pre><code>network:
   version: 2
   ethernets:
@@ -71,14 +64,13 @@ Ajouter le code
       access-points:
         "Livebox-2466":
           password: "S4TVJCQwaWZzknGibt"
-</code></pre>
-
+</code></pre>  
 > Changer l'adresse IP selon la box et le node
-
 Appliquer la configuration  
 <pre><code>sudo netplan generate
 sudo netplan apply
 </code></pre>
+
 #### Changer le hostname
 <pre><code>nano /etc/hostname
 </code></pre>
@@ -86,44 +78,12 @@ Changer le hostname en fonction du type de noeud
 <pre><code>cl-1-master-1
 </code></pre>
 <pre><code>cl-1-worker-1
-</code></pre>
-
+</code></pre>  
 >Les hostname de chaque noeud du cluster doivent être différents
-
 <pre><code>reboot
 </code></pre>
 
-## Installation de k3s
-### Mode single node master sans etcd
-#### Installation du master node
-<pre><code>sudo su
-curl -sfL https://get.k3s.io | sh -s - --token tokendetestoauat7579
-</code></pre>
-#### Installation d'un worker node
-<pre><code>sudo su
-curl -sfL https://get.k3s.io | K3S_URL=https://192.168.1.71:6443 K3S_TOKEN=tokendetestoauat7579 sh -
-</code></pre>
-### Mode High Availability with Embedded DB (Experimental) avec etcd
-
-## Installation de docker mode swarm
-### Installation de docker
-<pre><code>sudo su
-apt-get install docker.io
-apt-get install docker-compose
-docker volume create portainer_data
-docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer
-</code></pre>
-#### Installation du master node swarm
-<pre><code>sudo su
-docker swarm init --advertise-addr 192.168.1.100
-</code></pre>
-#### Installation d'un worker node swarm
-<pre><code>sudo su
-docker swarm join --token SWMTKN-1-4yx3gv5rzah7a9gaai288dqr14sulx8xhuwcuzv36lldp8ff47-8u744eei5ii7p9ms9e242no83 192.168.1.100:2377
-</code></pre>
-
-## Montage d'un volume NFS sur le master node
-### Création du server NFS
+#### Installation du server NFS
 <pre><code>sudo su
 apt-get install nfs-kernel-server
 </code></pre>
@@ -134,11 +94,9 @@ Copier coller les chemins ci-dessous
 <pre><code>/cocooning-master 192.168.1.100(rw,no_root_squash,sync,no_subtree_check)
 /cocooning-master/ddclient 192.168.1.100(rw,no_root_squash,sync,no_subtree_check)
 /cocooning-master/homeassistant 192.168.1.100(rw,no_root_squash,sync,no_subtree_check)
-</code></pre>
-
-> Créer autant de ligne que de répertoire à partager 
-> L'option async (dangereuse ?) permet de meilleures performances et le lancement de plusieurs replicas
-
+</code></pre>  
+> Créer autant de ligne que de répertoire à partager  
+> L'option async (dangereuse ?) permet de meilleures performances et le lancement de plusieurs replicas  
 Mettre à jour la table nfs
 <pre><code>exportfs -ra
 </code></pre>
@@ -152,3 +110,34 @@ Ouvrez les ports générés par la commande précédente.
 Relancer le service
 <pre><code>sudo service nfs-kernel-server reload
 </code></pre>
+
+### Installation de docker mode swarm
+#### Installation de docker
+<pre><code>sudo su
+apt-get install docker.io
+apt-get install docker-compose
+docker volume create portainer_data
+docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer
+</code></pre>
+#### Installation du master node swarm
+<pre><code>sudo su
+docker swarm init --advertise-addr 192.168.1.100
+</code></pre>
+#### Installation d'un worker node swarm
+<pre><code>sudo su
+docker swarm join --token SWMTKN-1-1j3c62om6dsr2urf0kanpvoachvppak86we4imnuh6fbulpmla-evhgif4aqwzn45q2nb11pw9by 192.168.1.100:2377
+</code></pre>
+
+### Installation de k3s en mode single node master sans etcd
+#### Installation du master node
+<pre><code>sudo su
+curl -sfL https://get.k3s.io | sh -s - --token tokendetestoauat7579
+</code></pre>
+#### Installation d'un worker node
+<pre><code>sudo su
+curl -sfL https://get.k3s.io | K3S_URL=https://192.168.1.71:6443 K3S_TOKEN=tokendetestoauat7579 sh -
+</code></pre>
+### Mode High Availability with Embedded DB (Experimental) avec etcd
+
+
+
