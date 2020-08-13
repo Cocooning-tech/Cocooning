@@ -11,7 +11,9 @@ Modifier le fichier
 Ajouter en fin de ligne
 <pre><code>cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
 </code></pre>
+
 >Voir si d'autres config sont possibles à ce niveau (WIFI...)  
+
 Ejecter la clé  
 Insérer la clef dans le nano  
 Se connecter en filaire (RJ45)  
@@ -37,6 +39,7 @@ unzip master
 # chmod -R 777 /cocooning-master
 cd /cocooning-master
 </code></pre>
+
 > https://codeload.github.com/Cocooning-tech/cocooning/zip/master à changer en fonction du repositorie
 > Sous la version 20.04 il peut être nécessaire de rebooter entre update et upgrade  
 
@@ -46,7 +49,9 @@ Configurer Netplan
 sudo nano /etc/netplan/10-my-config.yaml
 </code></pre>
 Ajouter le code  
+
 >Pas de tabulation dans ce fichier mais des "espaces"
+
 <pre><code>network:
   version: 2
   ethernets:
@@ -65,7 +70,9 @@ Ajouter le code
         "Livebox-2466":
           password: "S4TVJCQwaWZzknGibt"
 </code></pre>  
+
 > Changer l'adresse IP selon la box et le node
+
 Appliquer la configuration  
 <pre><code>sudo netplan generate
 sudo netplan apply
@@ -79,7 +86,9 @@ Changer le hostname en fonction du type de noeud
 </code></pre>
 <pre><code>cl-1-worker-1
 </code></pre>  
+
 >Les hostname de chaque noeud du cluster doivent être différents
+
 <pre><code>reboot
 </code></pre>
 
@@ -95,8 +104,9 @@ Copier coller les chemins ci-dessous
 /cocooning-master/ddclient 192.168.1.100(rw,no_root_squash,sync,no_subtree_check)
 /cocooning-master/homeassistant 192.168.1.100(rw,no_root_squash,sync,no_subtree_check)
 </code></pre>  
+
 > Créer autant de ligne que de répertoire à partager  
-> L'option async (dangereuse ?) permet de meilleures performances et le lancement de plusieurs replicas  
+
 Mettre à jour la table nfs
 <pre><code>exportfs -ra
 </code></pre>
