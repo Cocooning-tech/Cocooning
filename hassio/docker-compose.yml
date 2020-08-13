@@ -1,7 +1,7 @@
 version: '3.2'
 
 services:
-  homeassistant:
+  hassio:
 #    labels:
 #      - "traefik.enable=true"
 #      - "traefik.http.routers.hassio.rule=Host(`00001.cocooning.tech`)"

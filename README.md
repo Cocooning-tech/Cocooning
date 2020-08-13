@@ -1,4 +1,4 @@
-# Installation d'ubuntu server
+## Installation d'ubuntu server
 ### Installation de l'OS de base
 #### Gravure et insertion de la SD
 Graver une version de l'image disque sur SD card (Balena)
@@ -149,5 +149,16 @@ curl -sfL https://get.k3s.io | K3S_URL=https://192.168.1.71:6443 K3S_TOKEN=token
 </code></pre>
 ### Mode High Availability with Embedded DB (Experimental) avec etcd
 
+## Cocooning docker
+### Deployer une stack
+<pre><code>sudo su
+cd /cocooning-master/
+docker stack deploy --compose-file docker-compose.yml hassio
+</code></pre>
 
+### mettre à jour une stack
+<pre><code>sudo su
+cd /cocooning-master/
+docker service update --image homeassistant/raspberrypi3-homeassistant:0.114.0 hassio_hassio
+</code></pre>
 
