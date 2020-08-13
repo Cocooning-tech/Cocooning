@@ -32,12 +32,6 @@ sudo su # pour ubuntu 20.04
 apt-get upgrade
 apt-get install zip
 timedatectl set-timezone Europe/Paris
-cd /
-wget https://codeload.github.com/Cocooning-tech/cocooning/zip/master
-unzip master
-# chown -R nobody:nogroup /cocooning-master
-# chmod -R 777 /cocooning-master
-cd /cocooning-master
 </code></pre>
 
 > https://codeload.github.com/Cocooning-tech/cocooning/zip/master à changer en fonction du repositorie
@@ -128,6 +122,12 @@ apt-get install docker.io
 apt-get install docker-compose
 docker volume create portainer_data
 docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer
+cd /
+wget https://codeload.github.com/Cocooning-tech/cocooning/zip/master
+unzip master
+# chown -R nobody:nogroup /cocooning-master
+# chmod -R 777 /cocooning-master
+cd /cocooning-master
 </code></pre>
 #### Installation du master node swarm
 <pre><code>sudo su
