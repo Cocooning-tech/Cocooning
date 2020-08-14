@@ -30,8 +30,17 @@ apt-get update
 reboot # pour ubuntu 20.04
 sudo su # pour ubuntu 20.04  
 apt-get upgrade
-apt-get install zip
 timedatectl set-timezone Europe/Paris
+apt-get install zip docker.io docker-compose
+sudo systemctl enable docker
+docker volume create portainer_data
+docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer
+exit
+wget https://codeload.github.com/Cocooning-tech/cocooning/zip/master
+unzip master
+# chown -R nobody:nogroup /cocooning-master
+# chmod -R 777 /cocooning-master
+rm master
 </code></pre>
 
 > https://codeload.github.com/Cocooning-tech/cocooning/zip/master à changer en fonction du repositorie
@@ -115,50 +124,17 @@ Relancer le service
 <pre><code>sudo service nfs-kernel-server reload
 </code></pre>
 
-### Installation de docker mode swarm
-#### Installation de docker
-<pre><code>sudo su
-sudo apt-get install apt-transport-https ca-certificates curl software-properties-common
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add –
-sudo add-apt-repository "deb [arch=arm64] https://download.docker.com/linux/ubuntu  $(lsb_release -cs)  stable"
-sudo apt-get update
-sudo apt-get install docker-ce docker-compose
-</code></pre>
 
-<pre><code>sudo su
-apt-get install docker.io
-apt-get install docker-compose
-sudo systemctl enable docker
-docker volume create portainer_data
-docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer
-cd /
-wget https://codeload.github.com/Cocooning-tech/cocooning/zip/master
-unzip master
-# chown -R nobody:nogroup /cocooning-master
-# chmod -R 777 /cocooning-master
-rm master
-</code></pre>
-#### Installation du master node swarm
+
+## Cocooning docker
+### Installation du master node swarm
 <pre><code>sudo su
 docker swarm init --advertise-addr 192.168.1.100
 </code></pre>
-#### Installation d'un worker node swarm
+### Installation d'un worker node swarm
 <pre><code>sudo su
 docker swarm join --token SWMTKN-1-4x022l3208wgsjjgsg9zj0fl411ad9qoym4jizejlczpghp5qe-5ua8vji9d86dmcp3j3ncmtq7e 192.168.1.100:2377
 </code></pre>
-
-### Installation de k3s en mode single node master sans etcd
-#### Installation du master node
-<pre><code>sudo su
-curl -sfL https://get.k3s.io | sh -s - --token tokendetestoauat7579
-</code></pre>
-#### Installation d'un worker node
-<pre><code>sudo su
-curl -sfL https://get.k3s.io | K3S_URL=https://192.168.1.71:6443 K3S_TOKEN=tokendetestoauat7579 sh -
-</code></pre>
-### Mode High Availability with Embedded DB (Experimental) avec etcd
-
-## Cocooning docker
 Créer le network de type overlay : cocooning-network
 sOd54Sdr8g
 ### Deployer une stack
@@ -173,3 +149,14 @@ cd /cocooning-master/
 docker service update --image homeassistant/raspberrypi3-homeassistant:0.114.0 hassio_hassio
 </code></pre>
 
+
+### Installation de k3s en mode single node master sans etcd
+#### Installation du master node
+<pre><code>sudo su
+curl -sfL https://get.k3s.io | sh -s - --token tokendetestoauat7579
+</code></pre>
+#### Installation d'un worker node
+<pre><code>sudo su
+curl -sfL https://get.k3s.io | K3S_URL=https://192.168.1.71:6443 K3S_TOKEN=tokendetestoauat7579 sh -
+</code></pre>
+### Mode High Availability with Embedded DB (Experimental) avec etcd
