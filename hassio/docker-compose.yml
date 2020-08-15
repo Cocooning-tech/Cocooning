@@ -16,7 +16,7 @@ services:
 #          nocopy: false
     volumes:
       - type: bind
-        source: /cocooning-master/hassio
+        source: /apps/hassio
         target: /config
     environment:
       - TZ=Europe/Paris

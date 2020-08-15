@@ -10,7 +10,7 @@ services:
       - TZ=Europe/Paris
     volumes:
       - type: bind
-        source: /cocooning-master/ddclient
+        source: /apps/ddclient
         target: /config
 #    volumes:
 #      - type: volume

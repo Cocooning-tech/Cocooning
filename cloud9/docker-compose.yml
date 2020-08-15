@@ -7,16 +7,11 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Paris
+
     volumes:
-      - type: volume
-        source: cocooning-nfs
+      - type: bind
+        source: /apps
         target: /code
-        volume:
-          nocopy: false
-#    volumes:
-#      - type: bind
-#        source: /cocooning-master
-#        target: /code
     ports:
       - 8080:8000
     deploy:
@@ -25,10 +20,4 @@ services:
         constraints:
           - node.role == manager
 
-volumes:
-  cocooning-nfs:
-    driver: local
-    driver_opts:
-      type: "nfs"
-      o: "nfsvers=4,addr=192.168.1.100,rw,retrans=3"
-      device: ":/cocooning-master"
+
