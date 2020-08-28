@@ -61,12 +61,14 @@ Ajouter le code
     eth0:
       dhcp4: no
       dhcp6: no
+      accept-ra: no
       addresses: [192.168.1.99/24]
       gateway4: 192.168.1.1
   wifis:
     wlan0:
       dhcp4: no
       dhcp6: no
+      accept-ra: no
       addresses: [192.168.1.100/24]
       gateway4: 192.168.1.1
       access-points:

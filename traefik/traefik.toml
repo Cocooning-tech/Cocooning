@@ -1,7 +1,7 @@
 # /apps/traefik/traefik.toml
 [api]
   dashboard = true
-#  insecure = true
+  insecure = true
 
 [entryPoints]
   [entryPoints.web]
@@ -22,7 +22,7 @@
   [providers.docker]
     watch = true
     exposedByDefault = false
-    network = "web"
+    network = "cocooning-network"
 #    endpoint = "tcp://127.0.0.1:2377"
 #    swarmMode = true
 

@@ -3,20 +3,20 @@ version: "3.3"
 services:
 
   traefik:
-    image: "traefik:v2.2"
+    image: traefik:v2.2
     networks:
-      - web
+      - cocooning-network
     ports:
       - "80:80"
       - "443:443"
-#      - "8080"
+      - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /apps/traefik/traefik.toml:/etc/traefik/traefik.toml
       - /apps/traefik/acme.json:/acme.json
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.traefik.rule=Host(`00001.cocooning.tech`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
+      - "traefik.http.routers.traefik.rule=Host(`fred-et-guillaume.cocooning.tech`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
       - "traefik.http.routers.traefik.service=api@internal"
       - "traefik.http.routers.traefik.entrypoints=websecure"
 
@@ -26,5 +26,5 @@ services:
 #      - "traefik.http.middlewares.auth.basicauth.users=tchube:$$apr1$$DZUjqtsH$$VRKssSgVWzU3YlrCA2H6G1"
 
 networks:
-  web:
+  cocooning-network:
     external: true

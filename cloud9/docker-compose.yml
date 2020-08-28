@@ -7,7 +7,6 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Paris
-
     volumes:
       - type: bind
         source: /apps
@@ -19,5 +18,8 @@ services:
       placement:
         constraints:
           - node.role == manager
+networks:
+  cocooning-network:
+    external: true
 
 
