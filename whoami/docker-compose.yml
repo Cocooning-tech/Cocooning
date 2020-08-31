@@ -4,20 +4,24 @@ services:
 
   whoami:
     image: "containous/whoami:latest"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`fred-et-guillaume.cocooning.tech`) && PathPrefix(`/whoami`)"
-      - "traefik.http.routers.whoami.entrypoints=websecure"
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.whoami.tls=true"
+        - "traefik.http.services.whoami.loadbalancer.server.port=80"
+        - "certificatesresolvers.default.acme.tlschallenge=true"
+        - "traefik.http.routers.whoami.rule=Host(`fred-et-guillaume.cocooning.tech`) && PathPrefix(`/whoami`)"
+        - "traefik.http.routers.whoami.entrypoints=websecure"
 
-#      - "traefik.http.middlewares.myAdmin.ipWhiteList.sourceRange=172.17.0.1"
-#      - "traefik.http.routers.whoami.middlewares=myAdmin@docker"
-#      - "traefik.http.routers.whoami.middlewares=auth"
-#      - "traefik.http.middlewares.auth.basicauth.users=tchube:$$apr1$$DZUjqtsH$$VRKssSgVWzU3YlrCA2H6G1"
+  #      - "traefik.http.middlewares.myAdmin.ipWhiteList.sourceRange=172.17.0.1"
+  #      - "traefik.http.routers.whoami.middlewares=myAdmin@docker"
+  #      - "traefik.http.routers.whoami.middlewares=auth"
+  #      - "traefik.http.middlewares.auth.basicauth.users=tchube:$$apr1$$DZUjqtsH$$VRKssSgVWzU3YlrCA2H6G1"
 
 # htpasswd = 70rwD<ho1y
     networks:
-        - cocooning-network
+      - web
 
 networks:
-  cocooning-network:
+  web:
     external: true

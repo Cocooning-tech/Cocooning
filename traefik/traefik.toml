@@ -22,9 +22,8 @@
   [providers.docker]
     watch = true
     exposedByDefault = false
-    network = "cocooning-network"
-#    endpoint = "tcp://127.0.0.1:2377"
-#    swarmMode = true
+    network = "web"
+   swarmMode = true
 
 [certificatesResolvers]
   [certificatesResolvers.default]

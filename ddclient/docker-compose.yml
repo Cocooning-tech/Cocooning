@@ -3,7 +3,7 @@ version: "3.2"
 
 services:
   ddclient:
-    image: linuxserver/ddclient:arm64v8-latest
+    image: linuxserver/ddclient:v3.9.1-ls41
     environment:
       - PUID=1000
       - PGID=1000

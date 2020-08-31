@@ -39,8 +39,9 @@ docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /va
 exit
 wget https://codeload.github.com/Cocooning-tech/cocooning/zip/master
 unzip master
-mv cocooning-master apps
+mv cocooning-master /apps
 rm master
+chmod 777 -R /apps
 </code></pre>
 
 > https://codeload.github.com/Cocooning-tech/cocooning/zip/master à changer en fonction du repositorie
