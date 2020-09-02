@@ -10,7 +10,7 @@ services:
         - "traefik.http.routers.whoami.tls=true"
         - "traefik.http.services.whoami.loadbalancer.server.port=80"
         - "certificatesresolvers.default.acme.tlschallenge=true"
-        - "traefik.http.routers.whoami.rule=Host(`fred-et-guillaume.cocooning.tech`) && PathPrefix(`/whoami`)"
+        - "traefik.http.routers.whoami.rule=Host(`bourguetou.cocooning.tech`) && PathPrefix(`/whoami`)"
         - "traefik.http.routers.whoami.entrypoints=websecure"
 
   #      - "traefik.http.middlewares.myAdmin.ipWhiteList.sourceRange=172.17.0.1"
