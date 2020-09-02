@@ -8,7 +8,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.services.traefik.loadbalancer.server.port=8080"       
-        - "traefik.http.routers.traefik.rule=Host(`fred-et-guillaume.cocooning.tech`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
+        - "traefik.http.routers.traefik.rule=Host(`bourguetou.cocooning.tech`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
         - "traefik.http.routers.traefik.service=api@internal"
         - "traefik.http.routers.traefik.entrypoints=websecure"
 
