@@ -37,11 +37,14 @@ docker swarm init --advertise-addr 192.168.1.100
 docker volume create portainer_data
 docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer
 exit
+mkdir /home/root
 wget https://codeload.github.com/Cocooning-tech/cocooning/zip/master
 unzip master
 mv cocooning-master /apps
 rm master
 chmod 777 -R /apps
+chmod 600 /apps/trafik/acme.json
+
 </code></pre>
 
 > https://codeload.github.com/Cocooning-tech/cocooning/zip/master à changer en fonction du repositorie

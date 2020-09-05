@@ -1,0 +1,50 @@
+version: '3.2'
+
+services:
+  mosquitto:
+    deploy:
+#      labels:
+#        - "traefik.enable=true"
+#        - "certificatesresolvers.default.acme.tlschallenge=true"
+#        - "traefik.http.services.hassio.loadbalancer.server.port=8123" 
+#        - "traefik.http.routers.hassio.rule=Host(`bourguetou.cocooning.tech`)"
+#        - "traefik.http.routers.hassio.entrypoints=websecure"
+
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+    image: eclipse-mosquitto:latest
+#    volumes:
+#      - type: volume
+#        source: cocooning-nfs
+#        target: /config
+#        volume:
+#          nocopy: false
+    volumes:
+      - type: bind
+        source: /apps/mosquitto/mosquitto.conf
+        target: /mosquitto/config/mosquitto.conf
+      - type: bind
+        source: /apps/mosquitto/data/
+        target: /mosquitto/data/
+      - type: bind
+        source: /apps/mosquitto/log
+        target: /mosquitto/log      
+    networks:
+      - web
+    ports:
+      - "1883:1883"
+      - "9001-9001"
+
+# créer le network cocooning-network avec le driver overlay (pas d'option)
+networks:
+  web:
+    external: true
+#volumes:
+#  cocooning-nfs:
+#    driver: local
+#    driver_opts:
+#      type: "nfs4"
+#      o: "nfsvers=4,addr=192.168.1.100,rw,soft,nolock"
+#      device: ":/apps/hassio"

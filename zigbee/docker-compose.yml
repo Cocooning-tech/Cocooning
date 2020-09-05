@@ -1,0 +1,20 @@
+version: '3.7'
+services:
+  zigbee:
+    deploy:
+        replicas: 1
+        placement:
+            constraints:
+            - node.role == manager
+    image: koenkk/zigbee2mqtt:latest
+    environment:
+      - TZ=Europe/paris
+    volumes:
+      - /apps/zigbee/data:/app/data
+      - /dev/cc2531:/dev/cc2531
+    networks:
+      - web
+
+networks:
+  web:
+    external: true
