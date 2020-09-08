@@ -172,21 +172,21 @@ Create docker-setup-cc2531.sh
 </code></pre>
 Copy the following content:
 <pre><code>#!/bin/bash
- USBDEV=`readlink -f /dev/cc2531`
- read minor major < <(stat -c '%T %t' $USBDEV)
- if [[ -z $minor || -z $major ]]; then
-     echo 'Device not found'
-     exit
- fi
- dminor=$((0x${minor}))
- dmajor=$((0x${major}))
- CID=`docker ps -a --no-trunc | grep koenkk/zigbee2mqtt | head -1 |  awk '{print $1}'`
- if [[ -z $CID ]]; then
-     echo 'CID not found'
-     exit
- fi
- echo 'Setting permissions'
- echo "c $dmajor:$dminor rwm" > /sys/fs/cgroup/devices/docker/$CID/devices.allow
+USBDEV=`readlink -f /dev/cc2531`
+read minor major < <(stat -c '%T %t' $USBDEV)
+if [[ -z $minor || -z $major ]]; then
+    echo 'Device not found'
+    exit
+fi
+dminor=$((0x${minor}))
+dmajor=$((0x${major}))
+CID=`docker ps -a --no-trunc | grep koenkk/zigbee2mqtt | head -1 |  awk '{print $1}'`
+if [[ -z $CID ]]; then
+    echo 'CID not found'
+    exit
+fi
+echo 'Setting permissions'
+echo "c $dmajor:$dminor rwm" > /sys/fs/cgroup/devices/docker/$CID/devices.allow
 </code></pre>
 Set permissions:
 <pre><code>sudo chmod 744 /usr/local/bin/docker-setup-cc2531.sh
@@ -196,10 +196,10 @@ Create docker-event-listener.sh
 </code></pre>
 Copy the following content:
 <pre><code>#!/bin/bash
- docker events --filter 'event=start'| \
- while read line; do
-     /usr/local/bin/docker-setup-cc2531.sh
- done
+docker events --filter 'event=start'| \
+while read line; do
+    /usr/local/bin/docker-setup-cc2531.sh
+done
 </code></pre>
 Set permissions:
 <pre><code>sudo chmod 744 /usr/local/bin/docker-event-listener.sh
@@ -209,18 +209,18 @@ Create docker-event-listener.service
 </code></pre>
 Copy the following content:
 <pre><code> [Unit]
- Description=Docker Event Listener for TI CC2531 device
- After=network.target
- StartLimitIntervalSec=0
- [Service]
- Type=simple
- Restart=always
- RestartSec=1
- User=root
- ExecStart=/bin/bash /usr/local/bin/docker-event-listener.sh
+Description=Docker Event Listener for TI CC2531 device
+After=network.target
+StartLimitIntervalSec=0
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=root
+ExecStart=/bin/bash /usr/local/bin/docker-event-listener.sh
 
- [Install]
- WantedBy=multi-user.target
+[Install]
+WantedBy=multi-user.target
 </code></pre>
 Set permissions:
 <pre><code>sudo chmod 744 /etc/systemd/system/docker-event-listener.service
