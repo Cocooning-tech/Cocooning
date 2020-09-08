@@ -13,8 +13,8 @@ services:
       - /apps/zigbee/data:/app/data
       - /dev/cc2531:/dev/cc2531
     networks:
-      - web
+      - cocooning-network
 
 networks:
-  web:
+  cocooning-network:
     external: true

@@ -20,8 +20,8 @@ services:
 
 # htpasswd = 70rwD<ho1y
     networks:
-      - web
+      - cocooning-network
 
 networks:
-  web:
+  cocooning-network:
     external: true

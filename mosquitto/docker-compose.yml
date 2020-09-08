@@ -32,15 +32,17 @@ services:
         source: /apps/mosquitto/log
         target: /mosquitto/log      
     networks:
-      - web
+      - cocooning-network
     ports:
       - "1883:1883"
       - "9001-9001"
 
 # créer le network cocooning-network avec le driver overlay (pas d'option)
 networks:
-  web:
+  cocooning-network:
     external: true
+
+
 #volumes:
 #  cocooning-nfs:
 #    driver: local

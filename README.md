@@ -1,5 +1,5 @@
-## Installation d'ubuntu server
-### Installation de l'OS de base
+## Installation de l'OS
+### Installation d'Ubuntu server
 #### Gravure et insertion de la SD
 Graver une version de l'image disque sur SD card (Balena)
 * version __ubuntu-20.04-server__
@@ -31,7 +31,7 @@ reboot # pour ubuntu 20.04
 sudo su # pour ubuntu 20.04  
 apt-get upgrade
 timedatectl set-timezone Europe/Paris
-apt-get install zip docker.io docker-compose
+apt-get install zip docker.io docker-compose nfs-kernel-server
 # sudo systemctl enable docker
 docker swarm init --advertise-addr 192.168.1.100
 docker volume create portainer_data
@@ -42,9 +42,7 @@ wget https://codeload.github.com/Cocooning-tech/cocooning/zip/master
 unzip master
 mv cocooning-master /apps
 rm master
-chmod 777 -R /apps
 chmod 600 /apps/trafik/acme.json
-
 </code></pre>
 
 > https://codeload.github.com/Cocooning-tech/cocooning/zip/master à changer en fonction du repositorie
@@ -101,7 +99,72 @@ Changer le hostname en fonction du type de noeud
 <pre><code>reboot
 </code></pre>
 
-#### Installation du server NFS
+### Installation de Dietpi
+
+#### Gravure et insertion de la SD
+Graver une version de l'image disque sur SD card (Balena)
+* version 32 bits __DietPi_RPi-ARMv6-Buster__
+* version 64 bits __DietPi_RPi-ARMv8-Buster__
+Ejecter et rebrancher le lecteur/graveur USB  
+
+Modifier le fichier __cmdline.txt__ 
+Ajouter en fin de ligne
+<pre><code>cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
+</code></pre>
+
+Modifier le fichier __dietpi.txt__ du répertoire root de la SD
+<pre><code>AUTO_SETUP_LOCALE=fr_FR.UTF-8
+AUTO_SETUP_KEYBOARD_LAYOUT=fr
+AUTO_SETUP_TIMEZONE=Europe/Paris
+AUTO_SETUP_NET_WIFI_ENABLED=1
+AUTO_SETUP_NET_WIFI_COUNTRY_CODE=FR
+AUTO_SETUP_NET_USESTATIC=1
+AUTO_SETUP_NET_STATIC_IP=192.168.1.100
+AUTO_SETUP_NET_STATIC_MASK=255.255.255.0
+AUTO_SETUP_NET_STATIC_GATEWAY=192.168.1.1
+AUTO_SETUP_NET_HOSTNAME=cl-1-master-1
+</code></pre>
+
+Modifier le fichier __dietpi-wifi.txt__du répertoire root de la SD
+<pre><code># - WiFi SSID: required, case sensitive
+aWIFI_SSID[0]='Livebox-2466'
+# - WiFi key: If no key/open, leave this blank
+aWIFI_KEY[0]='S4TVJCQwaWZzknGibt'
+</code></pre>
+
+Ejecter la clé  
+Insérer la clef dans le nano  
+Pas besoin de se connecter en filaire (RJ45)  
+Brancher l'alimentation
+
+#### Première connection en SSH
+Utiliser Putty (déteminer IP sur port 22)  
+login : __root__  
+password : __dietpi__  
+Change le mot de passe et se reconnecter  
+Mettre à jour le système
+<pre><code>sudo su
+apt-get update
+apt-get upgrade
+apt-get install zip docker-compose nfs-kernel-server
+docker swarm init --advertise-addr 192.168.1.100
+docker volume create portainer_data
+docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer
+exit
+mkdir /home/root
+wget https://codeload.github.com/Cocooning-tech/cocooning/zip/master
+unzip master
+mv cocooning-master /apps
+rm master
+chmod 600 /apps/trafik/acme.json
+</code></pre>
+
+## Installation d'un contrôleur Zigbee
+### Module C
+
+### Module 
+
+## Installation d'un server NFS
 <pre><code>sudo su
 apt-get install nfs-kernel-server
 </code></pre>
@@ -130,29 +193,24 @@ Relancer le service
 <pre><code>sudo service nfs-kernel-server reload
 </code></pre>
 
-
-
-## Cocooning docker
-### Installation d'un worker node swarm
+## Docker mode swarm
+### Installation d'un master node
+<pre><code>sudo su
+docker swarm init --advertise-addr 192.168.1.100
+</code></pre>
+### Installation d'un worker node
 <pre><code>sudo su
  docker swarm join --token SWMTKN-1-45plvx8voqe5zzvt5jnxdyk6xmasyxb0krzwi3dq8ccsw5nvcr-7zb99uq704i02ztexz9yl30pn 192.168.1.100:2377
 </code></pre>
 Créer le network de type overlay (traefik,hassio...) : cocooning-network
-sOd54Sdr8g
-### Deployer une stack
+### Deployer Portainer
 <pre><code>sudo su
-cd /cocooning-master/hassio
-docker stack deploy --compose-file docker-compose.yml hassio
+cd /apps/portainer
+docker stack deploy --compose-file docker-compose.yml portainer
 </code></pre>
+> docker service update --image homeassistant/raspberrypi3-homeassistant:0.114.0 hassio_hassio
 
-### mettre à jour une stack
-<pre><code>sudo su
-cd /cocooning-master/
-docker service update --image homeassistant/raspberrypi3-homeassistant:0.114.0 hassio_hassio
-</code></pre>
-
-
-### Installation de k3s en mode single node master sans etcd
+## K3S
 #### Installation du master node
 <pre><code>sudo su
 curl -sfL https://get.k3s.io | sh -s - --token tokendetestoauat7579

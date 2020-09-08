@@ -18,7 +18,7 @@ services:
   #      - "traefik.http.middlewares.auth.basicauth.users=tchube:$$apr1$$DZUjqtsH$$VRKssSgVWzU3YlrCA2H6G1"
 
     networks:
-      - web
+      - cocooning-network
     ports:
       - "80:80"
       - "443:443"
@@ -29,5 +29,5 @@ services:
       - /apps/traefik/acme.json:/acme.json
 
 networks:
-  web:
+  cocooning-network:
     external: true

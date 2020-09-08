@@ -28,11 +28,16 @@ services:
     environment:
       - TZ=Europe/Paris
     networks:
-      - web
+      - cocooning-network
+
+# créer le network cocooning-network avec le driver overlay (pas d'option)
+networks:
+  cocooning-network:
+    external: true
 #volumes:
 #  cocooning-nfs:
 #    driver: local
 #    driver_opts:
-#      type: "nfs"
-#      o: "nfsvers=4,addr=192.168.1.100,rw"
+#      type: "nfs4"
+#      o: "nfsvers=4,addr=192.168.1.100,rw,soft,nolock"
 #      device: ":/apps/hassio"
