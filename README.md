@@ -208,7 +208,7 @@ Create docker-event-listener.service
 <pre><code>sudo nano /etc/systemd/system/docker-event-listener.service
 </code></pre>
 Copy the following content:
-<pre><code> [Unit]
+<pre><code>[Unit]
 Description=Docker Event Listener for TI CC2531 device
 After=network.target
 StartLimitIntervalSec=0
@@ -238,6 +238,7 @@ Enable Docker event listener
 <pre><code>sudo systemctl enable docker-event-listener.service
 </code></pre>
 Verify Zigbee2MQTT
+Reconect USB sniffer
 <pre><code>ls -al /dev/cc2531
 </code></pre>
 <pre><code>lrwxrwxrwx 1 root root 7 Sep 28 21:14 /dev/cc2531 -> ttyACM0
