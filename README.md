@@ -142,14 +142,12 @@ Utiliser Putty (déteminer IP sur port 22)
 login : __root__  
 password : __dietpi__  
 Change le mot de passe et se reconnecter  
-Mettre à jour le système
+configurer le système
 <pre><code>sudo su
-apt-get update
-apt-get upgrade
 apt-get install zip docker-compose nfs-kernel-server
 docker swarm init --advertise-addr 192.168.1.100
 docker volume create portainer_data
-docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer
+# docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer
 exit
 mkdir /home/root
 wget https://codeload.github.com/Cocooning-tech/cocooning/zip/master
