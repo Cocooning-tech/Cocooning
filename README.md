@@ -144,10 +144,10 @@ password : __dietpi__
 Change le mot de passe et se reconnecter  
 configurer le système
 <pre><code>sudo su
-apt-get install zip docker-compose nfs-kernel-server
+apt-get install zip docker-compose
 docker swarm init --advertise-addr 192.168.1.100
 docker volume create portainer_data
-# docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer
+portainer/portainer
 exit
 mkdir /home/root
 wget https://codeload.github.com/Cocooning-tech/cocooning/zip/master
@@ -155,6 +155,8 @@ unzip master
 mv cocooning-master /apps
 rm master
 chmod 600 /apps/traefik/acme.json
+cd /apps/portainer
+docker stack deploy --compose-file docker-compose.yml portainer
 </code></pre>
 
 ## Installation d'un contrôleur Zigbee
@@ -252,9 +254,7 @@ Créez une table d'export NFS
 <pre><code>nano /etc/exports
 </code></pre>
 Copier coller les chemins ci-dessous
-<pre><code>/cocooning-master 192.168.1.100(rw,no_root_squash,sync,no_subtree_check)
-/cocooning-master/ddclient 192.168.1.100(rw,no_root_squash,sync,no_subtree_check)
-/cocooning-master/hassio 192.168.1.100(rw,no_root_squash,sync,no_subtree_check)
+<pre><code>/apps/hassio 192.168.1.100(rw,no_root_squash,aync,no_subtree_check)
 </code></pre>  
 
 > Créer autant de ligne que de répertoire à partager  
@@ -283,10 +283,10 @@ docker swarm init --advertise-addr 192.168.1.100
  docker swarm join --token SWMTKN-1-45plvx8voqe5zzvt5jnxdyk6xmasyxb0krzwi3dq8ccsw5nvcr-7zb99uq704i02ztexz9yl30pn 192.168.1.100:2377
 </code></pre>
 Créer le network de type overlay (traefik,hassio...) : cocooning-network
-### Deployer Portainer
+### Deployer les stacks de base
 <pre><code>sudo su
-cd /apps/portainer
-docker stack deploy --compose-file docker-compose.yml portainer
+cd /apps/ddclient
+docker stack deploy --compose-file docker-compose.yml ddclient
 </code></pre>
 > docker service update --image homeassistant/raspberrypi3-homeassistant:0.114.0 hassio_hassio
 

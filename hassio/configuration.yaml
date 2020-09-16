@@ -1,0 +1,60 @@
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+#lovelace:
+#  mode: yaml
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+# zigbee2mqtt
+mqtt:
+  broker: 192.168.1.100 # This will have to be your MQTT broker, Mosquitto add-on is recommended.
+  discovery: true
+
+input_boolean:
+  zigbee_permit_join:
+    name: Allow devices to join
+    initial: off
+    icon: mdi:cellphone-wireless
+
+timer:
+  zigbee_permit_join:
+    name: Time remaining
+    duration: 600 # Updated this to the number of seconds you wish
+
+sensor:
+# mqtt
+  - platform: mqtt
+    name: Bridge state
+    state_topic: "zigbee2mqtt/bridge/state"
+    icon: mdi:router-wireless
+  - platform: mqtt
+    state_topic: "home/kitchen/temperature"
+    name: "MQTT Sensor 2"
+  - platform: mqtt
+    state_topic: "home/kitchen1/temps"
+    name: "MQTT Sensor 4"
+    icon: mdi:router-wireless
+# Monitoring master 1    
+  - platform: systemmonitor
+    resources:
+      - type: disk_use_percent
+        arg: /
+      - type: memory_use_percent
+      - type: swap_use_percent
+      - type: processor_use
+
+# Speedtest
+speedtestdotnet:
+  scan_interval: '00:30:00'
+  monitored_conditions:
+    - ping
+    - download
+    - upload

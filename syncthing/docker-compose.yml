@@ -1,0 +1,31 @@
+version: "3.1"
+
+services:
+  syncthing:
+    deploy:
+#      labels:
+#        - "traefik.enable=true"
+#        - "certificatesresolvers.default.acme.tlschallenge=true"
+#        - "traefik.http.services.hassio.loadbalancer.server.port=8123" 
+#        - "traefik.http.routers.hassio.rule=Host(`bourguetou.cocooning.tech`)"
+#        - "traefik.http.routers.hassio.entrypoints=websecure"
+
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+
+    image: linuxserver/syncthing
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Paris
+      - UMASK_SET=022
+    volumes:
+      - /apps/syncthing/config:/config
+      - /apps/hassio:/apps/save
+#      - /save:/data2
+    ports:
+      - 8384:8384
+      - 22000:22000
+      - 21027:21027/udp

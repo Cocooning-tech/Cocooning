@@ -32,7 +32,7 @@ services:
 networks:
   cocooning-network:
     driver: overlay
-    attachable: true
+#    attachable: true
 
 volumes:
   portainer_data:
