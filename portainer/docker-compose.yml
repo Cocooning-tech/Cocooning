@@ -31,7 +31,8 @@ services:
 
 networks:
   cocooning-network:
-    driver: overlay
+#    driver: overlay
+    external: true
 #    attachable: true
 
 volumes:

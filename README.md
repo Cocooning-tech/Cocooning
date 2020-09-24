@@ -144,7 +144,7 @@ password : __dietpi__
 Change le mot de passe et se reconnecter  
 configurer le système
 <pre><code>sudo su
-apt-get install zip docker-compose
+apt-get install zip docker-compose python3-pip
 docker swarm init --advertise-addr 192.168.1.100
 docker volume create portainer_data
 portainer/portainer
@@ -244,7 +244,8 @@ Reconect USB sniffer
 <pre><code>lrwxrwxrwx 1 root root 7 Sep 28 21:14 /dev/cc2531 -> ttyACM0
 </code></pre>
 
-### Module 
+### Installation du contôleur zig-a-zig-ah! (Bâton CC2652)
+
 
 ## Installation d'un server NFS
 <pre><code>sudo su

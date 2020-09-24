@@ -12,6 +12,7 @@ services:
     volumes:
       - /apps/zigbee/data:/app/data
       - /dev/cc2531:/dev/cc2531
+      - /run/udev:/run/udev:ro
     networks:
       - cocooning-network
 

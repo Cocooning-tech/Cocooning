@@ -50,6 +50,7 @@ sensor:
       - type: memory_use_percent
       - type: swap_use_percent
       - type: processor_use
+      - type: processor_temperature
 
 # Speedtest
 speedtestdotnet:
@@ -58,3 +59,4 @@ speedtestdotnet:
     - ping
     - download
     - upload
+

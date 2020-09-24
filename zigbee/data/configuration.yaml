@@ -14,7 +14,10 @@ mqtt:
   # user: my_user
   # password: my_password
 
-# Serial settings
+## Serial settings
 serial:
-  # Location of CC2531 USB sniffer
+  ## Location of CC2531 USB sniffer
   port: /dev/cc2531
+
+advanced:
+  rtscts: false

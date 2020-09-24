@@ -15,16 +15,19 @@ services:
         constraints:
           - node.role == manager
     image: homeassistant/raspberrypi3-homeassistant:stable
-#    volumes:
-#      - type: volume
-#        source: cocooning-nfs
-#        target: /config
-#        volume:
-#          nocopy: false
     volumes:
-      - type: bind
-        source: /apps/hassio
+      - type: volume
+        source: cocooning-nfs
         target: /config
+        volume:
+          nocopy: false
+    devices:
+      # your usb device forwarding to the docker image
+      - /dev/cc2531:/dev/cc2531
+#    volumes:
+#      - type: bind
+#        source: /apps/hassio
+#        target: /config
     environment:
       - TZ=Europe/Paris
     networks:
@@ -34,10 +37,10 @@ services:
 networks:
   cocooning-network:
     external: true
-#volumes:
-#  cocooning-nfs:
-#    driver: local
-#    driver_opts:
-#      type: "nfs4"
-#      o: "nfsvers=4,addr=192.168.1.100,rw,soft,nolock"
-#      device: ":/apps/hassio"
+volumes:
+  cocooning-nfs:
+    driver: local
+    driver_opts:
+      type: "nfs4"
+      o: "nfsvers=4,addr=192.168.1.100,rw,soft,nolock"
+      device: ":/apps/hassio"
