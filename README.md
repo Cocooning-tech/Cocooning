@@ -245,7 +245,88 @@ Reconect USB sniffer
 </code></pre>
 
 ### Installation du contôleur zig-a-zig-ah! (Bâton CC2652)
+Create a new udev rule for cc2531, idVendor and idProduct must be equal to values from lsusb command. The rule below creates device /dev/cc2531:
+<pre><code>echo "SUBSYSTEM==\"tty\", ATTRS{idVendor}==\"1a86\", ATTRS{idProduct}==\"7523\", SYMLINK+=\"cc2531\",  RUN+=\"/usr/local/bin/docker-setup-cc2531.sh\"" | sudo tee /etc/udev/rules.d/99-cc2531.rules
+</code></pre>
+Reload newly created rule using the following command:
+<pre><code>sudo udevadm control --reload-rules
+</code></pre>
+Create docker-setup-cc2531.sh
+<pre><code>sudo nano /usr/local/bin/docker-setup-cc2531.sh
+</code></pre>
+Copy the following content:
+<pre><code>#!/bin/bash
+USBDEV=`readlink -f /dev/cc2531`
+read minor major < <(stat -c '%T %t' $USBDEV)
+if [[ -z $minor || -z $major ]]; then
+    echo 'Device not found'
+    exit
+fi
+dminor=$((0x${minor}))
+dmajor=$((0x${major}))
+CID=`docker ps -a --no-trunc | grep koenkk/zigbee2mqtt | head -1 |  awk '{print $1}'`
+if [[ -z $CID ]]; then
+    echo 'CID not found'
+    exit
+fi
+echo 'Setting permissions'
+echo "c $dmajor:$dminor rwm" > /sys/fs/cgroup/devices/docker/$CID/devices.allow
+</code></pre>
+Set permissions:
+<pre><code>sudo chmod 744 /usr/local/bin/docker-setup-cc2531.sh
+</code></pre>
+Create docker-event-listener.sh
+<pre><code>sudo nano /usr/local/bin/docker-event-listener.sh
+</code></pre>
+Copy the following content:
+<pre><code>#!/bin/bash
+docker events --filter 'event=start'| \
+while read line; do
+    /usr/local/bin/docker-setup-cc2531.sh
+done
+</code></pre>
+Set permissions:
+<pre><code>sudo chmod 744 /usr/local/bin/docker-event-listener.sh
+</code></pre>
+Create docker-event-listener.service
+<pre><code>sudo nano /etc/systemd/system/docker-event-listener.service
+</code></pre>
+Copy the following content:
+<pre><code>[Unit]
+Description=Docker Event Listener for TI CC2531 device
+After=network.target
+StartLimitIntervalSec=0
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=root
+ExecStart=/bin/bash /usr/local/bin/docker-event-listener.sh
 
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+Set permissions:
+<pre><code>sudo chmod 744 /etc/systemd/system/docker-event-listener.service
+</code></pre>
+Reload daemon
+<pre><code>sudo systemctl daemon-reload
+</code></pre>
+Start Docker event listener
+<pre><code>sudo systemctl start docker-event-listener.service
+</code></pre>
+Status Docker event listener
+<pre><code>sudo systemctl status docker-event-listener.service
+</code></pre>
+Enable Docker event listener
+<pre><code>sudo systemctl enable docker-event-listener.service
+</code></pre>
+Verify Zigbee2MQTT
+Reconect USB sniffer
+<pre><code>ls -al /dev/cc2531
+</code></pre>
+<pre><code>lrwxrwxrwx 1 root root 7 Sep 28 21:14 /dev/cc2531 -> ttyACM0
+</code></pre>
 
 ## Installation d'un server NFS
 <pre><code>sudo su
