@@ -1,0 +1,33 @@
+version: '3.2'
+services:
+  reseau:
+    image: carldebilly/zigbee2mqttassistant
+    environment:
+      - Z2MA_SETTINGS__MQTTSERVER=192.168.1.100
+#      - Z2MA_SETTINGS__MQTTUSERNAME={MQTTUSERNAME}
+#      - Z2MA_SETTINGS__MQTTPASSWORD={MQTTPASSWORD}
+      - Z2MA_SETTINGS__MQTTPORT=1883
+#      - Z2MA_SETTINGS__MQTTSECURE=INSECURE
+      - TZ=Europe/Paris
+    networks:
+      - cocooning-network
+#    ports:
+#      - 8880:80
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.reseau.tls=true"
+        - "traefik.http.services.reseau.loadbalancer.server.port=80"
+        - "certificatesresolvers.default.acme.tlschallenge=true"
+        - "traefik.http.routers.reseau.rule=Host(`bourguetou.cocooning.tech`) && PathPrefix(`/reseau/`)"
+        - "traefik.http.routers.reseau.entrypoints=websecure"
+        - "traefik.http.middlewares.reseau_fixprefix.stripprefix.prefixes=/reseau/"
+        - "traefik.http.routers.reseau.middlewares=reseau_fixprefix"
+
+networks:
+  cocooning-network:
+    external: true

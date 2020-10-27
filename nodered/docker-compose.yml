@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  nodered:
+    image: nodered/node-red:latest
+    environment:
+      - TZ=Europe/Paris
+    volumes:
+      - nodered_data:/data
+    networks:
+      - cocooning-network
+#    ports:
+#      - "1880:1880"
+
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.nodered.tls=true"
+        - "traefik.http.services.nodered.loadbalancer.server.port=1880"
+        - "certificatesresolvers.default.acme.tlschallenge=true"
+        - "traefik.http.routers.nodered.rule=Host(`bourguetou.cocooning.tech`) && PathPrefix(`/nodered/`)"
+        - "traefik.http.routers.nodered.entrypoints=websecure"
+        - "traefik.http.middlewares.nodered_fixprefix.stripprefix.prefixes=/nodered/"
+        - "traefik.http.routers.nodered.middlewares=nodered_fixprefix"
+networks:
+  cocooning-network:
+#    driver: overlay
+    external: true
+#    attachable: true
+
+volumes:
+  nodered_data:

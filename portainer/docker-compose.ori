@@ -1,29 +1,18 @@
-version: '3.2'
-
+version: '3.8'
 services:
-  agent:
-    image: portainer/agent
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /var/lib/docker/volumes:/var/lib/docker/volumes
-    networks:
-      - cocooning-network
-    deploy:
-      mode: global
-      placement:
-        constraints: [node.platform.os == linux]
-
-
   portainer:
     image: portainer/portainer-ce
-    command: -H tcp://tasks.agent:9001 --tlsskipverify
+    command: -H unix:///var/run/docker.sock
     ports:
-#      - "9000:9000"
-      - "8000:8000"
+      - 9000
     volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
       - portainer_data:/data
     networks:
       - cocooning-network
+
     deploy:
       mode: replicated
       replicas: 1
@@ -38,11 +27,12 @@ services:
         - "traefik.http.routers.portainer.entrypoints=websecure"
         - "traefik.http.middlewares.portainer_fixprefix.stripprefix.prefixes=/portainer/"
         - "traefik.http.routers.portainer.middlewares=portainer_fixprefix"
+
+
+volumes:
+  portainer_data:
 networks:
   cocooning-network:
 #    driver: overlay
     external: true
 #    attachable: true
-
-volumes:
-  portainer_data:

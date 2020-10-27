@@ -1,31 +1,44 @@
-version: "3.1"
+version: "3.8"
 
 services:
   syncthing:
-    deploy:
-#      labels:
-#        - "traefik.enable=true"
-#        - "certificatesresolvers.default.acme.tlschallenge=true"
-#        - "traefik.http.services.hassio.loadbalancer.server.port=8123" 
-#        - "traefik.http.routers.hassio.rule=Host(`bourguetou.cocooning.tech`)"
-#        - "traefik.http.routers.hassio.entrypoints=websecure"
-
-      replicas: 1
-      placement:
-        constraints:
-          - node.role == manager
-
     image: linuxserver/syncthing
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Paris
       - UMASK_SET=022
+#    volumes:
+#      - type: bind
+#        source: /apps/syncthing/config
+#        target: /config
     volumes:
-      - /apps/syncthing/config:/config
-      - /apps/hassio:/apps/save
-#      - /save:/data2
+      - syncthing_data:/config
+    networks:
+      - cocooning-network
     ports:
-      - 8384:8384
+#      - 8384:8384
       - 22000:22000
       - 21027:21027/udp
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.syncthing.tls=true"
+        - "traefik.http.services.syncthing.loadbalancer.server.port=8384"
+        - "certificatesresolvers.default.acme.tlschallenge=true"
+        - "traefik.http.routers.syncthing.rule=Host(`bourguetou.cocooning.tech`) && PathPrefix(`/syncthing/`)"
+        - "traefik.http.routers.syncthing.entrypoints=websecure"
+        - "traefik.http.middlewares.syncthing_fixprefix.stripprefix.prefixes=/syncthing/"
+        - "traefik.http.routers.syncthing.middlewares=syncthing_fixprefix"
+networks:
+  cocooning-network:
+#    driver: overlay
+    external: true
+#    attachable: true
+
+volumes:
+  syncthing_data:

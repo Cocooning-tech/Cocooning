@@ -6,7 +6,8 @@ services:
       labels:
         - "traefik.enable=true"
         - "certificatesresolvers.default.acme.tlschallenge=true"
-        - "traefik.http.services.hassio.loadbalancer.server.port=8123" 
+        - "traefik.http.routers.hassio.tls=true"
+        - "traefik.http.services.hassio.loadbalancer.server.port=8123"
         - "traefik.http.routers.hassio.rule=Host(`bourguetou.cocooning.tech`)"
         - "traefik.http.routers.hassio.entrypoints=websecure"
 
@@ -21,9 +22,9 @@ services:
         target: /config
         volume:
           nocopy: false
-    devices:
-      # your usb device forwarding to the docker image
-      - /dev/cc2531:/dev/cc2531
+#    devices:
+##      your usb device forwarding to the docker image
+#      - /dev/cc2531:/dev/cc2531
 #    volumes:
 #      - type: bind
 #        source: /apps/hassio
