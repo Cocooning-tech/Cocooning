@@ -146,15 +146,17 @@ configurer le système
 <pre><code>sudo su
 apt-get install zip docker-compose python3-pip
 docker swarm init --advertise-addr 192.168.1.100
-docker volume create portainer_data
-portainer/portainer
-exit
 mkdir /home/root
 wget https://codeload.github.com/Cocooning-tech/cocooning/zip/master
 unzip master
 mv cocooning-master /apps
 rm master
 chmod 600 /apps/traefik/acme.json
+cd /apps/ddclient
+docker stack deploy --compose-file docker-compose.yml ddclient
+cd /apps/traefik
+docker network create -d overlay cocooning-network
+docker stack deploy --compose-file docker-compose.yml traefik
 cd /apps/portainer
 docker stack deploy --compose-file docker-compose.yml portainer
 </code></pre>
