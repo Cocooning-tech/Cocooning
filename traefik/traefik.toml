@@ -23,7 +23,7 @@
     watch = true
     exposedByDefault = false
     network = "cocooning-network"
-   swarmMode = true
+    swarmMode = true
 
 [certificatesResolvers]
   [certificatesResolvers.default]
