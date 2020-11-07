@@ -248,7 +248,7 @@ Reconect USB sniffer
 
 ### Installation du contôleur zig-a-zig-ah! (Bâton CC2652)
 Create a new udev rule for cc2652, idVendor and idProduct must be equal to values from lsusb command. The rule below creates device /dev/cc2652:
-<pre><code>echo "SUBSYSTEM==\"tty\", ATTRS{idVendor}==\"1a86\", ATTRS{idProduct}==\"7523\", SYMLINK+=\"cc2652\",  RUN+=\"/usr/local/bin/docker-setup-cc2652.sh\"" | sudo tee /etc/udev/rules.d/99-cc2652.rules
+<pre><code>echo "SUBSYSTEM==\"tty\", ATTRS{idVendor}==\"1a86\", ATTRS{idProduct}==\"7523\", SYMLINK+=\"cc2652\",  RUN+=\"/usr/local/bin/docker-setup-cc2652.sh\"" | sudo tee /etc/udev/rules.d/98-cc2652.rules
 </code></pre>
 Reload newly created rule using the following command:
 <pre><code>sudo udevadm control --reload-rules
